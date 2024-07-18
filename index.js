@@ -44,9 +44,9 @@ async function run() {
 
     //middlewares
     const verifyToken = (req, res, next) => {
-      console.log("inside verify token", req.headers.authorization);
+      // console.log("inside verify token", req.headers.authorization);
       if (!req.headers.authorization) {
-        return res.status(401).send({ message: "Forbidden" });
+        return res.status(401).send({ message: "Forbidden" });  
       }
       const token = req.headers.authorization.split(" ")[1];
       jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
@@ -193,7 +193,7 @@ async function run() {
     app.post("/create-payment-intent",async(req, res, ) => {
       const {price} = req.body;
       const amount = parseInt(price * 100);
-
+     if(!price || amount < 1) return
 
       const paymentIntent = await stripe.paymentIntents.create({
         amount: amount,
